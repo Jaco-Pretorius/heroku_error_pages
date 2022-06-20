@@ -25,7 +25,7 @@ module HerokuErrorPages
         self.asset_host = nil
       end
 
-      controller.render(template: template assigns: assigns)
+      controller.render(template: template, assigns: assigns)
     end
   end
 end
