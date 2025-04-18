@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HerokuErrorPages
   class PageConfig
     attr_accessor :s3_path, :template, :assigns, :controller

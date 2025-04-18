@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module HerokuErrorPages
   class PublicAsset
     class << self
       def all
-        Dir.glob(Rails.public_path.join('*', '**')).map do |absolute_path|
+        Dir.glob(Rails.public_path.join("*", "**")).map do |absolute_path|
           new(absolute_path)
         end
       end
@@ -19,7 +21,7 @@ module HerokuErrorPages
     end
 
     def mime_type
-      extension = File.extname(absolute_path).strip.downcase[1..-1]
+      extension = File.extname(absolute_path).strip.downcase[1..]
       Mime::Type.lookup_by_extension(extension)&.to_s
     end
   end
