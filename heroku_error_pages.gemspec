@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
 
   # Uncomment to register a new dependency of your gem
   spec.add_dependency "aws-sdk-s3", "~> 1"
-  spec.add_runtime_dependency "rails", "~> 6"
+  spec.add_runtime_dependency "rails", ">= 6.0", "< 8.0"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
