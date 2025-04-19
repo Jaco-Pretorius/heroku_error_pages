@@ -20,7 +20,7 @@ module HerokuErrorPages
       )
     end
 
-    def config_maintenance_page(s3_path:, template:, assigns: nil, controller: nil)
+    def configure_maintenance_page(s3_path:, template:, assigns: nil, controller: nil)
       @maintenance_page = PageConfig.new(
         s3_path: s3_path,
         template: template,
