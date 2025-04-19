@@ -41,7 +41,6 @@ module HerokuErrorPages
 
       s3_object = Aws::S3::Object.new(config.s3_bucket_name, page_config.s3_path, client: s3_client)
       s3_object.put(
-        acl: "public-read",
         body: Renderer.render_html(page_config),
         content_type: "text/html"
       )
