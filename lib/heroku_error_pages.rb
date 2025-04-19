@@ -6,6 +6,7 @@ require_relative "heroku_error_pages/page_config"
 require_relative "heroku_error_pages/railtie"
 require_relative "heroku_error_pages/renderer"
 require_relative "heroku_error_pages/public_asset"
+require "aws-sdk-s3"
 
 module HerokuErrorPages
   class << self
