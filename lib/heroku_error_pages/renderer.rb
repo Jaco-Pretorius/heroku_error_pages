@@ -23,11 +23,11 @@ module HerokuErrorPages
     attr_reader :template, :assigns, :controller
 
     def generate_html
-      controller = Class.new(controller) do
+      controller_without_asset_host = Class.new(controller) do
         self.asset_host = nil
       end
 
-      controller.render(template: template, assigns: assigns)
+      controller_without_asset_host.render(template: template, assigns: assigns)
     end
   end
 end
