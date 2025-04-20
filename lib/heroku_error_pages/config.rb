@@ -11,19 +11,19 @@ module HerokuErrorPages
       @aws_region = "us-east-1"
     end
 
-    def configure_error_page(template:, assigns: nil, controller: nil)
+    def configure_error_page(template:, assigns: nil, layout: nil)
       @error_page = PageConfig.new(
         template: template,
         assigns: assigns,
-        controller: controller
+        layout: layout
       )
     end
 
-    def configure_maintenance_page(template:, assigns: nil, controller: nil)
+    def configure_maintenance_page(template:, assigns: nil, layout: nil)
       @maintenance_page = PageConfig.new(
         template: template,
         assigns: assigns,
-        controller: controller
+        layout: layout
       )
     end
   end
