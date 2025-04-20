@@ -9,11 +9,11 @@ require_relative "heroku_error_pages/public_asset"
 require "aws-sdk-s3"
 
 module HerokuErrorPages
-  class << self
-    S3_PREFIX = "heroku_error_pages"
-    ERROR_PAGE = "error_page.html"
-    MAINTENANCE_PAGE = "maintenance_page.html"
+  S3_PREFIX = "heroku_error_pages"
+  ERROR_PAGE = "error_page.html"
+  MAINTENANCE_PAGE = "maintenance_page.html"
 
+  class << self
     def config
       @config ||= Config.new
     end
