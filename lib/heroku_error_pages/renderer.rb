@@ -26,10 +26,9 @@ module HerokuErrorPages
       rendering_controller = Class.new(controller) do
         self.asset_host = nil
         self.relative_url_root = "/#{HerokuErrorPages::S3_PREFIX}"
-        self.layout = false
       end
 
-      rendering_controller.render(template: template, assigns: assigns)
+      rendering_controller.render(template: template, assigns: assigns, layout: false)
     end
   end
 end
