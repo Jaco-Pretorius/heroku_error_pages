@@ -5,8 +5,4 @@ namespace :heroku_error_pages do
   task deploy: :environment do
     HerokuErrorPages.deploy
   end
-
-  task configure_bucket_policy: :environment do
-    HerokuErrorPages.configure_bucket_policy
-  end
 end

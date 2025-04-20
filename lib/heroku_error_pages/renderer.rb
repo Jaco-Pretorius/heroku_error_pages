@@ -23,11 +23,12 @@ module HerokuErrorPages
     attr_reader :template, :assigns, :controller
 
     def generate_html
-      controller_without_asset_host = Class.new(controller) do
+      rendering_controller = Class.new(controller) do
         self.asset_host = nil
+        self.relative_url_root = "/#{HerokuErrorPages::S3_PREFIX}"
       end
 
-      controller_without_asset_host.render(template: template, assigns: assigns)
+      rendering_controller.render(template: template, assigns: assigns)
     end
   end
 end
