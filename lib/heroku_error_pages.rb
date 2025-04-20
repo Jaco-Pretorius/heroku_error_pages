@@ -25,6 +25,38 @@ module HerokuErrorPages
     def deploy
       raise "No custom pages were configured" unless config.error_page || config.maintenance_page
 
+      with_s3_client do |s3_client|
+        deploy_page(config.error_page, s3_client, "error_page.html")
+        deploy_page(config.maintenance_page, s3_client, "maintenance_page.html")
+        deploy_public_assets(s3_client)
+      end
+    end
+
+    def configure_bucket_policy
+      with_s3_client do |s3_client|
+        policy = {
+          Version: "2012-10-17",
+          Statement: [
+            {
+              Sid: "AllowPublicReadForHerokuErrorPages",
+              Effect: "Allow",
+              Principal: "*",
+              Action: "s3:GetObject",
+              Resource: "arn:aws:s3:::#{config.s3_bucket_name}/#{S3_PREFIX}/*"
+            }
+          ]
+        }.to_json
+
+        s3_client.put_bucket_policy(
+          bucket: config.s3_bucket_name,
+          policy: policy
+        )
+      end
+    end
+
+    private
+
+    def with_s3_client
       s3_client = Aws::S3::Client.new(
         credentials: Aws::Credentials.new(
           config.aws_access_key_id,
@@ -33,12 +65,8 @@ module HerokuErrorPages
         region: config.aws_region
       )
 
-      deploy_page(config.error_page, s3_client, "error_page.html")
-      deploy_page(config.maintenance_page, s3_client, "maintenance_page.html")
-      deploy_public_assets(s3_client)
+      yield s3_client
     end
-
-    private
 
     def deploy_page(page_config, s3_client, page_name)
       return if page_config.nil?
