@@ -1,10 +1,15 @@
 # HerokuErrorPages
 
-Heroku allows you to configure custom error pages for application/launch errors and maintenance mode. https://devcenter.heroku.com/articles/error-pages#customize-pages
+Heroku allows you to configure [custom error pages](https://devcenter.heroku.com/articles/error-pages#customize-pages) for application errors and maintenance mode.
 
-This gem allows you to easily generate one or both of these pages during your Heroku deployment and store the static HTML on Amazon S3. This means your custom error pages are always using your latest stylesheets. You simply supply the template and S3 configuration variables.
+This gem allows you to build the pages in your Rails application and generate the pages during Heroku deployments and store the static HTML on Amazon S3. This means your custom error pages are always kept up-to-date.
 
-## Installation
+There are 3 areas of configuration:
+- Gem Installation and Configuration
+- AWS Configuration
+- Heroku Configuration
+
+## Gem Installation
 
 Install the gem and add to the application's Gemfile by executing:
 
@@ -14,9 +19,9 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
     $ gem install heroku_error_pages
 
-## Usage
+## Gem Configuration
 
-Configure the error and/or maintenance pages. For a rails application, create a file like `config/initializers/heroku_error_pages.rb`.
+Configure the error and/or maintenance pages via an initializer in `config/initializers/heroku_error_pages.rb`.
 
 Sample configuration:
 
@@ -45,19 +50,54 @@ HerokuErrorPages.configure do |config|
 end
 ```
 
-Add this to your `Procfile` to configure Heroku to deploy your custom pages as part of deployments:
+## S3 Configuration
+
+The AWS user specified in the configuration must have `s3:PutObject` permissions for the specified AWS S3 bucket. The gem does not specify any ACLs for the uploaded files, so the bucket policy must allow public access to the files.
+
+The gem prefixes all files with `heroku_error_pages/` to avoid conflicts with other files in the bucket. You can therefore apply a single bucket policy to allow public access to only the files with this prefix.
+
+This example policy will allow public access to all files with the prefix `heroku_error_pages/` (make sure you replace `your-s3-bucket` with your actual bucket name):
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowPublicReadForHerokuErrorPages",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::YOUR_BUCKET_NAME_HERE/heroku_error_pages/*"
+        }
+    ]
+```
+
+In order to use a policy for allowing public access, configure your bucket like this:
+
+- ☑️ Block public access to buckets and objects granted through new access control lists (ACLs)
+- ☑️ Block public access to buckets and objects granted through any access control lists (ACLs)
+- ⬜ Block public access to buckets and objects granted through new public bucket or access point policies
+- ⬜ Block public and cross-account access to buckets and objects through any public bucket or access point policies
+
+## Heroku Configuration
+
+Configure the Heroku `Procfile` to deploy your custom pages as part of deployments:
 
 ```
 release: bundle exec rake heroku_error_pages:deploy
 ```
 
-You can verify that your error pages are being served correctly out of S3 by navigating there in your browser, eg. `https://your-s3-bucket.s3.amazonaws.com/application_error.html`. Once you are satisfied you can configure Heroku to use your custom error pages:
+This rake task will generate `error_page.html` and/or `maintenance_page.html` and upload all the relevant assets (CSS, JS, images) to the S3 bucket in the `heroku_error_pages/` folder/prefix. This should ensure that the custom error pages have all assets referenced correctly via relative paths.
+
+You can verify that your error pages have the necessary permissions and are being served correctly out of S3 by navigating there in your browser, i.e. `https://your-s3-bucket.s3.amazonaws.com/heroku_error_pages/error_page.html` or `https://your-s3-bucket.s3.amazonaws.com/heroku_error_pages/maintenance_page.html`. Once you are satisfied you can configure Heroku to use your custom error pages:
 
 ```
 heroku config:set \
-  ERROR_PAGE_URL=//your-s3-bucket.s3.amazonaws.com/application_error.html \
-  MAINTENANCE_PAGE_URL=//your-s3-bucket.s3.amazonaws.com/your_maintenance_page.html
+  ERROR_PAGE_URL=//your-s3-bucket.s3.amazonaws.com/heroku_error_pages/error_page.html \
+  MAINTENANCE_PAGE_URL=//your-s3-bucket.s3.amazonaws.com/heroku_error_pages/maintenance_page.html
 ```
+
+The pages will be refreshed automatically as part of every deployment, which ensures that any style changes are automatically applied.
 
 ## Development
 
