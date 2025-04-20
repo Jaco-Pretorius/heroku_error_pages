@@ -11,18 +11,16 @@ module HerokuErrorPages
       @aws_region = "us-east-1"
     end
 
-    def configure_error_page(s3_path:, template:, assigns: nil, controller: nil)
+    def configure_error_page(template:, assigns: nil, controller: nil)
       @error_page = PageConfig.new(
-        s3_path: s3_path,
         template: template,
         assigns: assigns,
         controller: controller
       )
     end
 
-    def configure_maintenance_page(s3_path:, template:, assigns: nil, controller: nil)
+    def configure_maintenance_page(template:, assigns: nil, controller: nil)
       @maintenance_page = PageConfig.new(
-        s3_path: s3_path,
         template: template,
         assigns: assigns,
         controller: controller

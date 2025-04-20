@@ -32,7 +32,6 @@ HerokuErrorPages.configure do |config|
 
   # at least one page must be configured
   config.configure_error_page(
-    s3_path: 'application_error.html', # where the html will be stored in your S3 bucket
     template: 'errors/show', # the Rails template to render
     assigns: { # optional, any variables to assign to the template
       status: :internal_server_error
