@@ -4,14 +4,14 @@ module HerokuErrorPages
   class Renderer
     class << self
       def render_html(page_config)
-        new(page_config.template, page_config.assigns, page_config.controller).html
+        new(page_config.template, page_config.assigns, page_config.layout).html
       end
     end
 
-    def initialize(template, assigns, controller)
+    def initialize(template, assigns, layout)
       @template = template
       @assigns = assigns
-      @controller = controller
+      @layout = layout
     end
 
     def html
@@ -20,15 +20,15 @@ module HerokuErrorPages
 
     private
 
-    attr_reader :template, :assigns, :controller
+    attr_reader :template, :assigns, :layout
 
     def generate_html
-      rendering_controller = Class.new(controller) do
+      controller = Class.new(ActionController::Base) do
         self.asset_host = nil
         self.relative_url_root = "/#{HerokuErrorPages::S3_PREFIX}"
       end
 
-      rendering_controller.render(template: template, assigns: assigns, layout: false)
+      controller.render(template: template, assigns: assigns, layout: layout)
     end
   end
 end

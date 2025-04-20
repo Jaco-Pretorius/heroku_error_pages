@@ -2,12 +2,12 @@
 
 module HerokuErrorPages
   class PageConfig
-    attr_accessor :template, :assigns, :controller
+    attr_accessor :template, :assigns, :layout
 
-    def initialize(template:, assigns:, controller:)
+    def initialize(template:, assigns:, layout:)
       @template = template
       @assigns = assigns || {}
-      @controller = controller || ActionController::Base
+      @layout = layout || "application"
     end
   end
 end

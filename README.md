@@ -36,7 +36,7 @@ HerokuErrorPages.configure do |config|
     assigns: { # optional, any variables to assign to the template
       status: :internal_server_error
     },
-    controller: ErrorsController # optional, defaults to ActionController::Base
+    layout: 'public' # optional, defaults to 'application'
   )
 
   config.configure_maintenance_page(
