@@ -2,7 +2,7 @@
 
 Heroku allows you to configure [custom error pages](https://devcenter.heroku.com/articles/error-pages#customize-pages) for application errors and maintenance mode.
 
-This gem allows you to developer the pages in your Rails application, generate the pages during Heroku deployments, and store the static HTML on Amazon S3. This means your custom error pages are always kept up-to-date.
+This gem allows you to develop the pages in your Rails application, generate the pages during Heroku deployments, and store the static HTML on Amazon S3. This means your custom error pages are always kept up-to-date.
 
 There are 3 areas of configuration:
 - Gem Installation and Configuration
