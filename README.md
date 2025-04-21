@@ -1,5 +1,7 @@
 # HerokuErrorPages
 
+[![CI](https://github.com/Jaco-Pretorius/heroku_error_pages/actions/workflows/ci.yml/badge.svg)](https://github.com/Jaco-Pretorius/heroku_error_pages/actions/workflows/ci.yml)
+
 Heroku allows you to configure [custom error pages](https://devcenter.heroku.com/articles/error-pages#customize-pages) for application errors and maintenance mode.
 
 This gem allows you to develop the pages in your Rails application, generate the pages during Heroku deployments, and store the static HTML on Amazon S3. This means your custom error pages are always kept up-to-date.
