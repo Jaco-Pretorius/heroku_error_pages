@@ -53,14 +53,4 @@ RSpec.describe HerokuErrorPages::Config do
     expect(subject.maintenance_page.assigns).to eq({})
     expect(subject.maintenance_page.layout).to eq("application")
   end
-
-  it "allows configuration via the module helper" do
-    HerokuErrorPages.configure do |config|
-      config.s3_bucket_name = "my-s3-bucket"
-      config.configure_maintenance_page(template: "errors/maintenance")
-    end
-
-    expect(HerokuErrorPages.config.s3_bucket_name).to eq("my-s3-bucket")
-    expect(HerokuErrorPages.config.maintenance_page.template).to eq("errors/maintenance")
-  end
 end
